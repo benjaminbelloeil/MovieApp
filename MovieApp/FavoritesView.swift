@@ -1,18 +1,38 @@
-//
-//  FavoritesView.swift
-//  MovieApp
-//
-//  Created by Benjamin Belloeil on 8/28/24.
-//
-
 import SwiftUI
 
 struct FavoritesView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+    @StateObject private var viewModel = MovieViewModel()
 
-#Preview {
-    FavoritesView()
+    var body: some View {
+        NavigationView {
+            ZStack {
+                Color.black
+                    .edgesIgnoringSafeArea(.all)
+
+                if viewModel.movies.isEmpty {
+                    Text("No favorites yet")
+                        .foregroundColor(.white)
+                } else {
+                    ScrollView {
+                        VStack(spacing: 16) {
+                            ForEach(viewModel.movies) { movie in
+                                if movie.isFavorite {
+                                    NavigationLink(destination: MovieDetailView(movie: movie)) {
+                                        MovieRowView(movie: movie)
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                }
+                            }
+                        }
+                        .padding(.vertical)
+                    }
+                    .navigationTitle("My Favorites")
+                    .foregroundColor(.white)
+                }
+            }
+        }
+        .onAppear {
+            viewModel.fetchMovies()
+        }
+    }
 }
