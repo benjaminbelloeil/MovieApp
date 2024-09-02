@@ -44,7 +44,7 @@ MovieApp is a SwiftUI-based application that allows users to browse popular movi
    - Open `MovieViewModel.swift`
    - Replace the `apiKey` property with your own TMDb API key:
      ```swift
-     private let apiKey = "your_tmdb_api_key_here"
+     private let apiKey = ProcessInfo.processInfo.environment["MOVIE_API_KEY"] ?? ""
      ```
 
 4. **Run the App**
