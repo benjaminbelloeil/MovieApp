@@ -72,8 +72,6 @@ Contributions are welcome! If you'd like to improve the app, feel free to fork t
 - This app uses the [TMDb API](https://www.themoviedb.org/documentation/api) but is not endorsed or certified by TMDb.
 - Inspired by Netflix's design and user experience principles.
 
-```
-
 ### Key Sections:
 
 - **Features**: A brief overview of what the app can do.
