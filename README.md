@@ -11,9 +11,9 @@ MovieApp is a SwiftUI-based application that allows users to browse popular movi
 
 ## Screenshots
 
-![Home Screen](screenshots/home.png)
-![Movie Details](screenshots/movie-details.png)
-![Favorites](screenshots/favorites.png)
+<img width="497" alt="Home" src="https://github.com/user-attachments/assets/9eb5b7b1-e22f-49fb-acc9-51f031004e7b">
+<img width="497" alt="Movie Detail" src="https://github.com/user-attachments/assets/138bd496-8932-41cf-86bc-7780560e905f">
+<img width="453" alt="Favorites" src="https://github.com/user-attachments/assets/dead4308-3598-4fdb-9fae-e77f65d9189f">
 
 ## Requirements
 
