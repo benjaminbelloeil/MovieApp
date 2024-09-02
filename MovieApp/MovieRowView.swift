@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct MovieRowView: View {
+    @EnvironmentObject var movieViewModel: MovieViewModel
     let movie: Movie
 
     var body: some View {
@@ -58,6 +59,22 @@ struct MovieRowView: View {
                     .foregroundColor(.white.opacity(0.8))
             }
             .padding()
+
+            HStack {
+                Spacer()
+                VStack {
+                    Button(action: {
+                        print("Heart button pressed for movie: \(movie.title)")
+                        movieViewModel.toggleFavorite(movie: movie)
+                    }) {
+                        Image(systemName: movieViewModel.isFavorite(movie: movie) ? "heart.fill" : "heart")
+                            .foregroundColor(.red)
+                            .font(.system(size: 25))
+                            .padding()
+                    }
+                    Spacer()
+                }
+            }
         }
         .padding(.horizontal)
         .contentShape(Rectangle()) // Ensures the entire card is tappable

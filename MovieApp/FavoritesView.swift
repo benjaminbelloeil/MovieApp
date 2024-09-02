@@ -1,38 +1,31 @@
 import SwiftUI
 
 struct FavoritesView: View {
-    @StateObject private var viewModel = MovieViewModel()
+    @EnvironmentObject var movieViewModel: MovieViewModel
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.black
-                    .edgesIgnoringSafeArea(.all)
+        VStack {
+            Text("Total Favorites: \(movieViewModel.favoriteMovies.count)")
+                .foregroundColor(.white)
+                .padding()
 
-                if viewModel.movies.isEmpty {
-                    Text("No favorites yet")
-                        .foregroundColor(.white)
-                } else {
-                    ScrollView {
-                        VStack(spacing: 16) {
-                            ForEach(viewModel.movies) { movie in
-                                if movie.isFavorite {
-                                    NavigationLink(destination: MovieDetailView(movie: movie)) {
-                                        MovieRowView(movie: movie)
-                                    }
-                                    .buttonStyle(PlainButtonStyle())
-                                }
-                            }
-                        }
-                        .padding(.vertical)
-                    }
-                    .navigationTitle("My Favorites")
+            if movieViewModel.favoriteMovies.isEmpty {
+                Text("No favorites yet")
                     .foregroundColor(.white)
+            } else {
+                List(movieViewModel.favoriteMovies) { movie in
+                    Text(movie.title)
+                        .foregroundColor(.white)
                 }
             }
         }
+        .background(Color.black.edgesIgnoringSafeArea(.all))
         .onAppear {
-            viewModel.fetchMovies()
+            print("FavoritesView appeared. Current favorites count: \(movieViewModel.favoriteMovies.count)")
+        }
+        .onChange(of: movieViewModel.favoriteMovies) {
+            // UI will refresh automatically when favoriteMovies changes
+            print("Favorites updated.")
         }
     }
 }

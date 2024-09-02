@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct MovieDetailView: View {
+    @EnvironmentObject var movieViewModel: MovieViewModel
     let movie: Movie
     @Environment(\.presentationMode) var presentationMode
 
@@ -16,22 +17,34 @@ struct MovieDetailView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    // Movie Image
-                    if let posterURL = movie.posterURL {
-                        AsyncImage(url: posterURL) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 300)
-                                .clipped()
-                                .cornerRadius(10)
-                                .shadow(radius: 5)
-                        } placeholder: {
-                            Color.gray
-                                .frame(height: 300)
-                                .cornerRadius(10)
-                                .shadow(radius: 5)
+                    ZStack(alignment: .topTrailing) {
+                        // Movie Image
+                        if let posterURL = movie.posterURL {
+                            AsyncImage(url: posterURL) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 300)
+                                    .clipped()
+                                    .cornerRadius(10)
+                                    .shadow(radius: 5)
+                            } placeholder: {
+                                Color.gray
+                                    .frame(height: 300)
+                                    .cornerRadius(10)
+                                    .shadow(radius: 5)
+                            }
+                        }
+
+                        // Favorite Button on Top Right of Image
+                        Button(action: {
+                            movieViewModel.toggleFavorite(movie: movie)
+                        }) {
+                            Image(systemName: movieViewModel.isFavorite(movie: movie) ? "heart.fill" : "heart")
+                                .foregroundColor(.red)
+                                .font(.title)
+                                .padding()
                         }
                     }
 
@@ -42,6 +55,7 @@ struct MovieDetailView: View {
                         .foregroundColor(.white)
                         .padding(.bottom, 5)
                         .shadow(radius: 5)
+                    
 
                     // Movie Rating
                     HStack {

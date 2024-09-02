@@ -1,8 +1,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var viewModel = MovieViewModel()
+    @EnvironmentObject var viewModel: MovieViewModel
     @State private var selectedTab = 0
+    @State private var animateTitle = false
 
     var body: some View {
         NavigationView {
@@ -11,23 +12,28 @@ struct ContentView: View {
                     .edgesIgnoringSafeArea(.all)
 
                 VStack(spacing: 0) {
-                    // Header with Welcome Message and NavBar
+                    // Header with Animated Title and NavBar
                     ZStack(alignment: .bottom) {
                         LinearGradient(
                             gradient: Gradient(colors: [.red, .black.opacity(0.7)]),
                             startPoint: .top,
                             endPoint: .bottom
                         )
-                        .frame(height: 150)  // Increased height to accommodate the welcome message
+                        .frame(height: 150)
                         .edgesIgnoringSafeArea(.top)
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 5)
 
                         VStack(spacing: 10) {
-                            Text("Welcome to MovieNight")
-                                .font(.largeTitle)
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .shadow(radius: 10)
+                            // Netflix-style Animated Title
+                            Text("MOVIE NIGHT")
+                                .font(.system(size: 50, weight: .bold, design: .default))
+                                .foregroundColor(.red)
+                                .shadow(color: .red.opacity(0.8), radius: 4, x: 0, y: 0)
+                                .scaleEffect(animateTitle ? 1.05 : 1.0)
+                                .animation(Animation.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: animateTitle)
+                                .onAppear {
+                                    animateTitle = true
+                                }
 
                             Picker("", selection: $selectedTab) {
                                 Text("Home").tag(0)
@@ -37,12 +43,14 @@ struct ContentView: View {
                             .background(Color.clear)
                             .padding(.horizontal, 20)
                             .padding(.bottom, 5)
-                            .onChange(of: selectedTab) { _ in
+                            .onChange(of: selectedTab) {
                                 UIPageControl.appearance().currentPageIndicatorTintColor = UIColor.gray
                                 UIPageControl.appearance().pageIndicatorTintColor = UIColor.white.withAlphaComponent(0.3)
                             }
                         }
                     }
+
+                    Spacer() // Ensure content starts below the header
 
                     // Content based on the selected tab
                     if selectedTab == 0 {
@@ -67,13 +75,21 @@ struct ContentView: View {
                             .foregroundColor(.white)
                         }
                     } else {
-                        if viewModel.movies.isEmpty {
+                        if viewModel.favoriteMovies.isEmpty {
+                            Spacer()
                             Text("No favorites yet")
                                 .foregroundColor(.white)
+                                .font(.title)
+                                .multilineTextAlignment(.center)
+                                .padding()
+                                .onAppear {
+                                    print("Favorite movies: \(viewModel.favoriteMovies.map { $0.title })")
+                                }
+                            Spacer()
                         } else {
                             ScrollView {
                                 VStack(spacing: 16) {
-                                    ForEach(viewModel.movies.filter { $0.isFavorite }) { movie in
+                                    ForEach(viewModel.favoriteMovies) { movie in
                                         NavigationLink(destination: MovieDetailView(movie: movie)) {
                                             MovieRowView(movie: movie)
                                         }
@@ -83,6 +99,9 @@ struct ContentView: View {
                                 .padding(.vertical)
                             }
                             .foregroundColor(.white)
+                            .onAppear {
+                                print("Favorite movies: \(viewModel.favoriteMovies.map { $0.title })")
+                            }
                         }
                     }
                 }
@@ -105,6 +124,7 @@ struct ContentView: View {
         }
     }
 }
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView_PreviewWrapper()
@@ -115,6 +135,7 @@ struct ContentView_Previews: PreviewProvider {
 
         var body: some View {
             ContentView()
+                .environmentObject(viewModel)
         }
     }
 }
