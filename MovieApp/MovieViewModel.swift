@@ -6,7 +6,7 @@ class MovieViewModel: ObservableObject {
     @Published var showError = false
     @Published var errorMessage: String?
     
-    private let apiKey = "25cf32747c4f8222196450febb21f5bb"
+    private let apiKey = ProcessInfo.processInfo.environment["MOVIE_API_KEY"] ?? ""
 
     func toggleFavorite(movie: Movie) {
         DispatchQueue.main.async {
