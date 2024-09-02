@@ -1,6 +1,3 @@
-Certainly! Here's a sample `README.md` file tailored for your MovieApp project, which covers the basic project information, setup instructions, and usage:
-
-```markdown
 # MovieApp
 
 MovieApp is a SwiftUI-based application that allows users to browse popular movies, view detailed information about each movie, and mark movies as favorites. The app integrates with The Movie Database (TMDb) API to fetch the latest movie data.
@@ -87,5 +84,3 @@ Contributions are welcome! If you'd like to improve the app, feel free to fork t
 - **Contributing**: Guidelines for contributing to the project.
 - **License**: Information about the project’s licensing.
 - **Acknowledgments**: Credits and acknowledgment for any third-party resources or inspiration.
-
-You can customize this `README.md` as needed, especially the screenshots section, to better fit your project's needs.
